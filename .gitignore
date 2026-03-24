@@ -1,4 +1,5 @@
 *.csv
-dataset.csv
 data
+dataset.csv
 __pycache__
+*.pdf
