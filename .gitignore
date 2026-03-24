@@ -1,4 +1,5 @@
 *.csv
 dataset.csv
-data
 __pycache__
+data
+*.png
