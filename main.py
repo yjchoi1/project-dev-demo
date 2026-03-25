@@ -8,9 +8,6 @@ ACTIVATIONS = {
     "Tanh": nn.Tanh,
     "GELU": nn.GELU,
     "SiLU": nn.SiLU,
-    "ELU": nn.ELU,
-    "LeakyReLU": nn.LeakyReLU,
-    "Mish": nn.Mish,
 }
 
 
