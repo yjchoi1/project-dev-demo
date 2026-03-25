@@ -1,25 +1,26 @@
+import json
 import torch.nn as nn
 
 from train import train
 
-config = {
-    "data": {
-        "csv_path": "data/dataset.csv",
-        "train_fraction": 0.8,
-        "batch_size": 32,
-        "shuffle_train": True,
-        "num_workers": 0,
-    },
-    "model": {
-        "hidden_sizes": [64, 64],
-        "activation": nn.ReLU,
-    },
-    "training": {
-        "epochs": 50,
-        "lr": 1e-3,
-        "device": "cpu",
-    },
+ACTIVATIONS = {
+    "ReLU": nn.ReLU,
+    "Tanh": nn.Tanh,
+    "GELU": nn.GELU,
+    "SiLU": nn.SiLU,
+    "ELU": nn.ELU,
+    "LeakyReLU": nn.LeakyReLU,
+    "Mish": nn.Mish,
 }
 
+
+def load_config(path: str) -> dict:
+    with open(path) as f:
+        config = json.load(f)
+    config["model"]["activation"] = ACTIVATIONS[config["model"]["activation"]]
+    return config
+
+
 if __name__ == "__main__":
+    config = load_config("config.json")
     model = train(config)
