@@ -13,6 +13,7 @@
     "training": {
         "epochs": 50,
         "lr": 0.001,
-        "device": "cpu"
+        "device": "cpu",
+        "checkpoint_path": "best_model.pt"
     }
 }
