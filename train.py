@@ -32,7 +32,9 @@ def train(config):
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=train_cfg["lr"])
 
-    # Training loop
+    checkpoint_path = train_cfg.get("checkpoint_path", "best_model.pt")
+    best_val_loss = float("inf")
+
     for epoch in range(train_cfg["epochs"]):
         model.train()
         train_loss = 0.0
@@ -59,5 +61,10 @@ def train(config):
         val_loss /= len(val_loader.dataset)
 
         print(f"Epoch {epoch + 1}/{train_cfg['epochs']}  train_loss={train_loss:.4f}  val_loss={val_loss:.4f}")
+
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            torch.save(model.state_dict(), checkpoint_path)
+            print(f"  -> saved checkpoint (val_loss={val_loss:.4f})")
 
     return model

@@ -1,0 +1,19 @@
+{
+    "data": {
+        "csv_path": "data/dataset.csv",
+        "train_fraction": 0.8,
+        "batch_size": 32,
+        "shuffle_train": true,
+        "num_workers": 0
+    },
+    "model": {
+        "hidden_sizes": [64, 64],
+        "activation": "ReLU"
+    },
+    "training": {
+        "epochs": 50,
+        "lr": 0.001,
+        "device": "cpu",
+        "checkpoint_path": "best_model.pt"
+    }
+}
