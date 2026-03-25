@@ -6,12 +6,16 @@ from model import MLP
 
 
 def train(config):
+    data_cfg = config["data"]
+    model_cfg = config["model"]
+    train_cfg = config["training"]
+
     train_loader, val_loader = get_dataloaders(
-        config["csv_path"],
-        config["batch_size"],
-        config["train_fraction"],
-        config["shuffle_train"],
-        config["num_workers"],
+        data_cfg["csv_path"],
+        data_cfg["batch_size"],
+        data_cfg["train_fraction"],
+        data_cfg["shuffle_train"],
+        data_cfg["num_workers"],
     )
 
     # Get feature dim (e.g. 4) and target dim (e.g. 1) to build the model.
@@ -19,17 +23,17 @@ def train(config):
     model = MLP(
         example_features.shape[0],
         example_targets.shape[0],
-        config["hidden_sizes"],
-        config["activation"],
+        model_cfg["hidden_sizes"],
+        model_cfg["activation"],
     )
-    device = torch.device(config["device"])
+    device = torch.device(train_cfg["device"])
     model = model.to(device)
 
     loss_fn = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
+    optimizer = torch.optim.Adam(model.parameters(), lr=train_cfg["lr"])
 
     # Training loop
-    for epoch in range(config["epochs"]):
+    for epoch in range(train_cfg["epochs"]):
         model.train()
         train_loss = 0.0
         for batch_features, batch_targets in train_loader:
@@ -54,6 +58,6 @@ def train(config):
                 val_loss += loss.item() * len(batch_features)
         val_loss /= len(val_loader.dataset)
 
-        print(f"Epoch {epoch + 1}/{config['epochs']}  train_loss={train_loss:.4f}  val_loss={val_loss:.4f}")
+        print(f"Epoch {epoch + 1}/{train_cfg['epochs']}  train_loss={train_loss:.4f}  val_loss={val_loss:.4f}")
 
     return model
